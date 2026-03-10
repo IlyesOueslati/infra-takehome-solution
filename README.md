@@ -66,6 +66,19 @@ Example response:
 
 ![PostgREST Users](screenshots/postgrest-users.png)
 
+## Architecture
+
+This diagram shows the infrastructure created in this project.
+
+- Terraform provisions the local infrastructure
+- k3d runs the Kubernetes cluster
+- ArgoCD manages Kubernetes applications
+- PostgREST exposes a REST API connected to PostgreSQL
+- A Kubernetes Job seeds the database with example data
+- The API can be accessed from the browser
+
+![Architecture Diagram](screenshots/architecture-diagram.png)
+
 ## Steps to run
 
 ### 1. Clone the repository
