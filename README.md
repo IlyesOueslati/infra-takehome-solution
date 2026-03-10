@@ -64,4 +64,4 @@ http://localhost:3000/users
 
 Example response:
 
-![PostgREST Users](postgrest/screenshots/postgrest-users.png)
+![PostgREST Users](screenshots/postgrest-users.png)
