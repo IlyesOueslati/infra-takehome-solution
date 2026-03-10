@@ -65,3 +65,38 @@ http://localhost:3000/users
 Example response:
 
 ![PostgREST Users](screenshots/postgrest-users.png)
+
+## Steps to run
+
+### 1. Clone the repository
+
+git clone https://github.com/IlyesOueslati/infra-takehome-solution
+
+### 2. Start infrastructure
+
+cd tofu  
+terraform init  
+terraform apply
+
+### 3. Install ArgoCD
+
+cd ../argocd  
+kubectl apply -k .
+
+### 4. Deploy PostgREST
+
+cd ../postgrest  
+kubectl apply -f postgrest.yaml  
+kubectl apply -f service.yaml  
+
+### 5. Seed database
+
+kubectl apply -f job.yaml
+
+### 6. Access API
+
+kubectl port-forward svc/postgrest -n postgrest 3000:3000
+
+Then open in your browser:
+
+http://localhost:3000/users
