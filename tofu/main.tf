@@ -1,5 +1,10 @@
 provider "docker" {}
 
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "k3d-infra-takehome"
+}
+
 resource "terraform_data" "k3d_cluster" {
   input = {
     name  = var.k3d_cluster_name
@@ -58,4 +63,24 @@ provider "postgresql" {
 resource "postgresql_database" "postgrest" {
   name       = "postgrest"
   depends_on = [docker_container.postgres]
+}
+
+resource "kubernetes_namespace" "postgrest" {
+  metadata {
+    name = "postgrest"
+  }
+}
+
+resource "kubernetes_secret" "postgrest_db" {
+  metadata {
+    name      = "postgrest-db-secret"
+    namespace = kubernetes_namespace.postgrest.metadata[0].name
+  }
+
+  data = {
+    username = "postgrest"
+    password = "postgrest"
+  }
+
+  type = "Opaque"
 }
