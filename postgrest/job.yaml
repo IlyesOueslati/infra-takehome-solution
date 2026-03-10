@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed-users
+  namespace: postgrest
+spec:
+  template:
+    spec:
+      containers:
+      - name: seed
+        image: postgres:16
+        command:
+        - sh
+        - -c
+        - |
+          psql postgres://postgrest:postgrest@host.docker.internal:5432/postgrest <<EOF
+          CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            name TEXT
+          );
+          INSERT INTO users (name) VALUES ('Alice'), ('Bob');
+          EOF
+      restartPolicy: Never
+  backoffLimit: 2
